@@ -1,0 +1,244 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Me faz um PIX? 💸</title>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      min-height: 100vh;
+      min-height: 100dvh;
+      overflow: hidden;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #101a30, #30104a, #071c28);
+      color: white;
+    }
+
+    .card {
+      width: 90%;
+      max-width: 430px;
+      padding: 40px 20px;
+      text-align: center;
+      background: rgba(255, 255, 255, 0.09);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 25px;
+      box-shadow: 0 0 40px #0005;
+      backdrop-filter: blur(12px);
+    }
+
+    .emoji {
+      font-size: 75px;
+      margin-bottom: 20px;
+      animation: flutuar 2s infinite ease-in-out;
+    }
+
+    h1 {
+      font-size: 30px;
+      margin-bottom: 12px;
+    }
+
+    p {
+      color: #ddd;
+      margin-bottom: 30px;
+      font-size: 16px;
+    }
+
+    .botoes {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 18px;
+      min-height: 55px;
+    }
+
+    button {
+      border: none;
+      padding: 15px 24px;
+      border-radius: 12px;
+      font-size: 17px;
+      font-weight: bold;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    #sim {
+      color: white;
+      background: #00c878;
+      box-shadow: 0 5px 20px #00c87855;
+    }
+
+    #sim:hover {
+      transform: scale(1.08);
+      box-shadow: 0 0 25px #00ff99;
+    }
+
+    #nao {
+      background: #ff4267;
+      color: white;
+      touch-action: manipulation;
+      z-index: 10;
+    }
+
+    #mensagem {
+      margin-top: 25px;
+      font-size: 22px;
+      font-weight: bold;
+      color: #63ffb4;
+      display: none;
+      animation: aparecer 0.5s ease;
+    }
+
+    .pix {
+      font-size: 45px;
+      margin-top: 15px;
+      display: none;
+    }
+
+    @keyframes flutuar {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-12px); }
+    }
+
+    @keyframes aparecer {
+      from {
+        opacity: 0;
+        transform: scale(0.7);
+      }
+      to {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+
+    @media (max-width: 380px) {
+      .card {
+        padding: 30px 12px;
+      }
+
+      h1 {
+        font-size: 26px;
+      }
+
+      button {
+        padding: 13px 17px;
+        font-size: 15px;
+      }
+
+      .botoes {
+        gap: 12px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <main class="card">
+    <div class="emoji">🥹💸</div>
+
+    <h1>Me faz um PIX?</h1>
+    <p>Prometo que é por uma boa causa! 😂</p>
+
+    <div class="botoes">
+      <button id="sim">SIM! ✅</button>
+      <button id="nao">NÃO ❌</button>
+    </div>
+
+    <div id="mensagem">
+      SABIA QUE VOCÊ IA ACEITAR! 😂💸
+      <div class="pix">🤑💰🎉</div>
+    </div>
+  </main>
+
+  <script>
+    const botaoNao = document.getElementById("nao");
+    const botaoSim = document.getElementById("sim");
+    const mensagem = document.getElementById("mensagem");
+    const pix = document.querySelector(".pix");
+
+    function fugir() {
+      const margem = 10;
+
+      // O botão passa a se movimentar pela tela.
+      botaoNao.style.position = "fixed";
+
+      const largura = botaoNao.offsetWidth;
+      const altura = botaoNao.offsetHeight;
+
+      // Calcula limites que mantêm o botão dentro da tela.
+      const maxX = Math.max(
+        margem,
+        window.innerWidth - largura - margem
+      );
+
+      const maxY = Math.max(
+        margem,
+        window.innerHeight - altura - margem
+      );
+
+      const x = margem + Math.random() * (maxX - margem);
+      const y = margem + Math.random() * (maxY - margem);
+
+      botaoNao.style.left = `${x}px`;
+      botaoNao.style.top = `${y}px`;
+    }
+
+    // Foge quando o mouse chega perto.
+    botaoNao.addEventListener("pointerenter", fugir);
+
+    // Impede clicar no NÃO.
+    botaoNao.addEventListener("pointerdown", (event) => {
+      event.preventDefault();
+      fugir();
+    });
+
+    // Funciona também em celulares.
+    botaoNao.addEventListener("touchstart", (event) => {
+      event.preventDefault();
+      fugir();
+    }, { passive: false });
+
+    // O SIM continua clicável.
+    botaoSim.addEventListener("click", () => {
+      mensagem.style.display = "block";
+      pix.style.display = "block";
+      botaoSim.textContent = "ACEITEI! ✅";
+    });
+
+    // Mantém o botão dentro da tela ao redimensionar.
+    window.addEventListener("resize", () => {
+      if (botaoNao.style.position === "fixed") {
+        const margem = 10;
+        const maxX = Math.max(
+          margem,
+          window.innerWidth - botaoNao.offsetWidth - margem
+        );
+        const maxY = Math.max(
+          margem,
+          window.innerHeight - botaoNao.offsetHeight - margem
+        );
+
+        let x = parseFloat(botaoNao.style.left) || margem;
+        let y = parseFloat(botaoNao.style.top) || margem;
+
+        x = Math.min(maxX, Math.max(margem, x));
+        y = Math.min(maxY, Math.max(margem, y));
+
+        botaoNao.style.left = `${x}px`;
+        botaoNao.style.top = `${y}px`;
+      }
+    });
+  </script>
+</body>
+</html>
